@@ -1,9 +1,10 @@
-# transformer.py
-# Transforms messages from an AWS SQS Queue and adds to a 
+# worker.py
+# Transforms messages from an AWS SQS Queue and loads them into a 
 # MongoDB database
 #
 # In order to run, you will need an AWS account and have added your
-# access and secret keys to your environmental variables.
+# access and secret keys to your environmental variables or boto 
+# config as detailed in the boto documentation.
 # 
 # Note that this is for demonstration only and is not production ready 
 # code.  At a minimum this file would require exeption handling, logging, 
@@ -12,10 +13,7 @@
 # Author:   Allen Leis <allen.leis@gmail.com>
 # Created:  Wed Oct 8 20:14:08 2014 -0400
 #
-# Copyright (C) 2014 
-# For license information, see LICENSE.txt
-#
-# ID: transformer.py [] allen.leis@gmail.com
+# ID: worker.py [] allen.leis@gmail.com
 
 """
 Transforms messages from an AWS SQS Queue and adds to a MongoDB database
@@ -47,14 +45,25 @@ COLLECTION_NAME='summaries'
 ##########################################################################
 
 def ping():
+    '''
+    simple function to draw a dot to the screen every time a message is
+    processed
+    '''
     sys.stdout.write('.')
     sys.stdout.flush()
 
 def get_queue():
+    '''
+    convenience function to return a connection to the SQS Queue
+    '''
     conn = boto.sqs.connect_to_region("us-east-1")
     return conn.get_queue(QUEUE_NAME)
 
 def get_collection():
+    '''
+    convenience function to return a pymongo collection object in order
+    to add new documents
+    '''
     client = MongoClient(CONNECTION_STRING)
     db = client[DB_NAME]
     return db[COLLECTION_NAME]
@@ -91,6 +100,10 @@ def transform(data):
 
 
 def work(queue, collection):
+    '''
+    loops through an SQS Queue, transforms each message, and loads it into
+    a MongoDB database.
+    '''
     counter = 0
     while True:
         m = queue.read()
