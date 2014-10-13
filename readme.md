@@ -22,7 +22,7 @@ To install the required libraries, use pip install and the provided requirements
 	
 ## Create an Amazon Web Services account
 
-An account can be created [http://aws.amazon.com/](http://aws.amazon.com/).
+An account for AWS can be created at [http://aws.amazon.com/](http://aws.amazon.com/).
 
 ## Download and configure security keys
 
@@ -34,7 +34,7 @@ It's recommended that you setup secure access to AWS according to the [Boto docu
 
 Visit the [AWS SQS](https://console.aws.amazon.com/sqs/) page to manage SQS Queues.  Click on "Create New Queue", supply a "Queue Name", and then use the provided default values.
 
-The name you entered will need to be added to both enqueuer.py and worker.py as the value for `QUEUE_NAME`.
+The name you enter will need to be added to both enqueuer.py and worker.py as the value for `QUEUE_NAME`.
 
 Note: At the time of this documentation, API requests to SQS were free up to the first one million requests per month and 50 cents per million afterwards.
 
@@ -42,12 +42,12 @@ Note: At the time of this documentation, API requests to SQS were free up to the
 
 Installation documenation for MongoDB can be found of MongoDB's official website: [http://docs.mongodb.org/manual/installation/](http://docs.mongodb.org/manual/installation/).  Make sure MongoDB is running and configure `worker.py` with the correct server location, database name, and collection name as needed.
 
-If you would like to use an alternate database, you'll need to replace PyMongo with the database adapter of your choice.  Some relational database examples are:
+If you would like to use an alternate database, you'll need to replace [PyMongo](http://api.mongodb.org/python/current/) with the database adapter of your choice.  Some relational database examples are:
 
-* sqlite3
-* MySQLdb
-* psycopg2
-* SQLAlchemy
+* [sqlite3](https://docs.python.org/2/library/sqlite3.html)
+* [MySQLdb](http://mysql-python.sourceforge.net/MySQLdb.html)
+* [psycopg2](http://initd.org/psycopg/docs/)
+* [SQLAlchemy](http://docs.sqlalchemy.org/)
 
 # enqueuer.py
 
@@ -55,13 +55,12 @@ This script will read in all CSV files within the `./data` directory, loop throu
 
 	python enqueuer.py
 	
+Do not attempt to run multiple copies of the `enqueuer.py` file concurrently.
+	
 # worker.py
 
 This script will download one message at a time from the SQS Queue, transform the JSON data, and then save it to MongoDB.  To activate the script, use the following command:
 
 	python worker.py
-	
-	
 
-
-	
+For an accurate demonstration you will want to run multiple copies of this script concurrently. 
