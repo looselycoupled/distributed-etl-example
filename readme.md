@@ -19,7 +19,7 @@ There are several steps for setup of this demonstration.  The user will need to:
 To install the required libraries, use pip install and the provided requirements.txt file.
 
 	pip install -r requirements.txt
-	
+
 ## Create an Amazon Web Services account
 
 An account for AWS can be created at [http://aws.amazon.com/](http://aws.amazon.com/).
@@ -54,13 +54,13 @@ If you would like to use an alternate database, you'll need to replace [PyMongo]
 This script will read in all CSV files within the `./data` directory, loop through each row, and send a JSON version to the SQS queue.  To activate the script, use the following command:
 
 	python enqueuer.py
-	
+
 Do not attempt to run multiple copies of the `enqueuer.py` file concurrently.
-	
+
 # worker.py
 
 This script will download one message at a time from the SQS Queue, transform the JSON data, and then save it to MongoDB.  To activate the script, use the following command:
 
 	python worker.py
 
-For an accurate demonstration you will want to run multiple copies of this script concurrently. 
+For an accurate demonstration you will want to run multiple copies of this script concurrently.
